@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="theme_main">#9E9E9E</color>
+    <color name="theme_main_dense">#757575</color>
+
+    <color name="theme_accent">#EC407A</color>
+    <color name="theme_accent_dense">#880E4F</color>
+
+    <color name="fore_default">#EE000000</color>
+    <color name="void_default">#12000000</color>
+    <color name="back_default">#FFFFFFFF</color>
+</resources>

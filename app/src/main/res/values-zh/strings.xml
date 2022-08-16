@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">壁纸提取</string>
+    <string name="btn_open">打开文件</string>
+    <string name="btn_get">获取壁纸</string>
+    <string name="btn_extract">保存颜色</string>
+    <string name="btn_save">保存图像</string>
+    <string name="request_title">权限请求</string>
+    <string name="request_body">%s 需要对内部存储的访问权，以获取并存储壁纸文件。</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_ok">确定</string>
+    <string name="toast_get_fail">获取壁纸失败</string>
+    <string name="saved_title">图像已保存</string>
+    <string name="saved_body_l1">图像已存储为 %s。</string>
+    <string name="saved_body_l2">颜色已存储至 %s.</string>
+    <string name="toast_save_fail">无法保存</string>
+    <string name="saved_title_json">颜色已保存</string>
+</resources>
