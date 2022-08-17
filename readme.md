@@ -4,9 +4,11 @@ Get Wallpaper
 ![][package] ![][latest_version] ![][build_date]  
 [![][license]][license_link] ![][made_with] ![][api_tested]![][api_supported]
 
+
+
 [package]: https://img.shields.io/badge/Package-wmsdf.cl.exp4.getwallpaper-lightgrey.svg?style=flat-square
-[latest_version]: https://img.shields.io/badge/Version-1.2%20(1200)-green.svg?style=flat-square
-[build_date]: https://img.shields.io/badge/Build%20date-20220816-blue.svg?style=flat-square
+[latest_version]: https://img.shields.io/badge/Version-1.3%20(1300)-green.svg?style=flat-square
+[build_date]: https://img.shields.io/badge/Build%20date-20220817%20枪毙节快乐！-blue.svg?style=flat-square
 [license]: https://img.shields.io/badge/License-GNU%20GPL%20v3-blue.svg?style=flat-square
 [license_link]: https://www.gnu.org/licenses/gpl-3.0.en.html
 [made_with]: https://img.shields.io/badge/Made%20with-Android%20Studio-green.svg?style=flat-square

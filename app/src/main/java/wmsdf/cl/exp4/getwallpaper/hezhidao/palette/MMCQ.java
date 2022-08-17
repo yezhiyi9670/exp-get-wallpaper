@@ -1,5 +1,6 @@
 package wmsdf.cl.exp4.getwallpaper.hezhidao.palette;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Parcel;
@@ -13,9 +14,12 @@ import androidx.core.graphics.ColorUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
+
+import wmsdf.cl.exp4.getwallpaper.util.ColorDeriveUtils;
 
 /**
  * Created by hgm on 9/20/18.
@@ -268,7 +272,7 @@ public class MMCQ {
         boxQueue.addAll(store);
     }
 
-    public List<ThemeColor> quantize() {
+    public ArrayList<ThemeColor> quantize() {
         if (mWidth * mHeight < mMaxColor) {
             throw new IllegalArgumentException(
                     "Image({" + mWidth + "}x{" + mHeight + "}) too small to be quantized");
@@ -309,7 +313,27 @@ public class MMCQ {
             themeColors.offer(themeColor);
         }
 
-        return new ArrayList<>(themeColors);
+        ArrayList<ThemeColor> lst = new ArrayList<>(themeColors);
+        ThemeColor[] arr = lst.toArray(new ThemeColor[0]);
+        Arrays.sort(arr, (color1, color2) -> {
+            if(color1.getProportion() > color2.getProportion()) return -1;
+            if(color1.getProportion() < color2.getProportion()) return +1;
+            return 0;
+        });
+        lst = new ArrayList<ThemeColor>();
+        for(ThemeColor color : arr) {
+            boolean hasSimilarOne = false;
+            for(ThemeColor color2 : lst) {
+                if(isSimilarColor(color.getColor(), color2.getColor())) {
+                    hasSimilarOne = true;
+                }
+            }
+            if(!hasSimilarOne) {
+                lst.add(color);
+            }
+        }
+        return lst;
+
     }
 
     public static int getColorPart(int color, @ColorPart int which) {
@@ -328,10 +352,30 @@ public class MMCQ {
         }
     }
 
-    private static final double COLOR_TOLERANCE = 0.5;
+    private static final double TOLERANCE_HUE = 1.0 / 10;
+    private static final double TOLERANCE_DIST = 0.5;
+    private static final double TOLERANCE_LIGHT = 0.3;
+    private static final double TOLERANCE_SAT = 0.8;
 
     public static boolean isSimilarColor(int color1, int color2) {
-        return colorDistance(color1, color2) < COLOR_TOLERANCE;
+        float hue1 = ColorDeriveUtils.getHue(color1);
+        float hue2 = ColorDeriveUtils.getHue(color2);
+        float light1 = ColorDeriveUtils.getLightness(color1);
+        float light2 = ColorDeriveUtils.getLightness(color2);
+        float sat1 = ColorDeriveUtils.getSaturation(color1);
+        float sat2 = ColorDeriveUtils.getSaturation(color2);
+        double dist = colorDistance(color1, color2);
+        float meanLight = (ColorDeriveUtils.getHslLightness(color1) + ColorDeriveUtils.getHslLightness(color2)) / 2;
+
+        float hueDifference = (float)Math.pow(((sat1 + sat2) / 2) * (meanLight <= 0.5 ? meanLight * 2 : (1 - meanLight) * 2), 0.5);
+
+        if(1 == 1) {
+            return Math.min(Math.abs(hue2 - hue1), 1.0 - Math.abs(hue2 - hue1)) * hueDifference < TOLERANCE_HUE
+                    && Math.abs(light2 - light1) < TOLERANCE_LIGHT
+                    && Math.abs(sat2 - sat1) < TOLERANCE_SAT;
+        } else {
+            return dist < TOLERANCE_DIST;
+        }
     }
 
     public static double colorDistance(int color1, int color2) {

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonWriter;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 import wmsdf.cl.exp4.getwallpaper.hezhidao.palette.ImagePalette;
+import wmsdf.cl.exp4.getwallpaper.hezhidao.palette.MMCQ;
 import wmsdf.cl.exp4.getwallpaper.intent.PhotoSelectContract;
 import wmsdf.cl.exp4.getwallpaper.intent.WallpaperType;
 import wmsdf.cl.exp4.getwallpaper.util.ColorDeriveUtils;
@@ -49,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_extract;
     private Button btn_open;
 
+    private ViewGroup color_display;
+    private int color_display_size = 0;
+
     private ActivityResultLauncher<Integer> imageOpenLauncher;
 
     @Override
@@ -63,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         btn_open = findViewById(R.id.btn_open);
         btn_save.setEnabled(false);
         btn_extract.setEnabled(false);
+        color_display = findViewById(R.id.color_display);
+        color_display_size = color_display.getChildCount();
 
         setActionGet();
         setActionOpen();
@@ -112,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
                 writer.name("main").value(0x00FFFFFF & palette2.mainColor);
                 writer.name("accent").value(0x00FFFFFF & palette2.accentColor);
                 writer.name("distancedAccent").value(0x00FFFFFF & palette2.distancedAccentColor);
+                writer.name("colors");
+                writer.beginArray();
+                for(MMCQ.ThemeColor cl : palette2.colors) {
+                    writer.value(0x00FFFFFF & cl.getColor());
+                }
+                writer.endArray();
                 writer.endObject();
                 writer.flush();
                 success = true;
@@ -174,13 +188,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * 重置按钮颜色
+     */
+    private void resetButtonColors() {
+        Button[] buttons = new Button[]{btn_open, btn_get, btn_extract, btn_save};
+        for (Button btn : buttons) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                btn.setBackgroundTintList(ColorDeriveUtils.stateListFromColor(ActivityCompat.getColor(this, R.color.theme_main)));
+                btn.setTextColor(ActivityCompat.getColor(this, R.color.back_default));
+            }
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ActivityCompat.getColor(this, R.color.theme_main_dense));
+        }
+        ((AppCompatActivity)this).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ActivityCompat.getColor(this, R.color.theme_main)));
+
+        for(int i = 0; i < color_display_size; i++) {
+            color_display.getChildAt(i).setBackgroundColor(ActivityCompat.getColor(this, R.color.void_default));
+        }
+    }
+
+    /**
      * 提取颜色，设置样式
      */
     private void extractColorsUpdate() {
         palette1 = new ImagePalette(wallpaperDrawable.getBitmap(), 256, 0.75f);
         palette2 = new ImagePalette(wallpaperDrawable.getBitmap(), 256, 1.0f);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ColorDeriveUtils.tweakLightness(palette1.mainColor, +0.08f, 0.0f, 1.0f));
+            getWindow().setStatusBarColor(ColorDeriveUtils.tweakLightness(palette1.mainColor, -0.08f, 0.0f, 1.0f));
 
             btn_open.setBackgroundTintList(ColorDeriveUtils.stateListFromColor(palette2.mainColor));
             btn_open.setTextColor(ActivityCompat.getColor(this, R.color.back_default));
@@ -195,6 +230,13 @@ public class MainActivity extends AppCompatActivity {
             btn_save.setTextColor(palette2.distancedAccentColor);
         }
         ((AppCompatActivity)this).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette1.mainColor));
+
+        for(int i = 0; i < color_display_size; i++) {
+            if(i >= palette2.colors.length) {
+                break;
+            }
+            color_display.getChildAt(i).setBackgroundColor(palette2.colors[i].getColor());
+        }
     }
 
     /**
@@ -227,23 +269,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    /**
-     * 重置按钮颜色
-     */
-    private void resetButtonColors() {
-        Button[] buttons = new Button[]{btn_open, btn_get, btn_extract, btn_save};
-        for (Button btn : buttons) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                btn.setBackgroundTintList(ColorDeriveUtils.stateListFromColor(ActivityCompat.getColor(this, R.color.theme_main)));
-                btn.setTextColor(ActivityCompat.getColor(this, R.color.back_default));
-            }
-        }
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ActivityCompat.getColor(this, R.color.theme_main_dense));
-        }
-        ((AppCompatActivity)this).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ActivityCompat.getColor(this, R.color.theme_main)));
     }
 
     /**
