@@ -306,7 +306,7 @@ public class MMCQ {
         while (!pOneQueue.isEmpty()) {
             VBox vBox = pOneQueue.poll();
             double proportion = (double) vBox.mNumPixs / oriVBox.mNumPixs;
-            if (proportion < 0.05) {
+            if (proportion < 0.5 / 200) {
                 continue;
             }
             ThemeColor themeColor = new ThemeColor(vBox.getAvgColor(), proportion);
@@ -322,13 +322,13 @@ public class MMCQ {
         });
         lst = new ArrayList<ThemeColor>();
         for(ThemeColor color : arr) {
-            boolean hasSimilarOne = false;
+            double howDifferent = 1.0;
             for(ThemeColor color2 : lst) {
                 if(isSimilarColor(color.getColor(), color2.getColor())) {
-                    hasSimilarOne = true;
+                    howDifferent *= howDifferentTheyAre(color.getColor(), color2.getColor());
                 }
             }
-            if(!hasSimilarOne) {
+            if(howDifferent >= 0.7) {
                 lst.add(color);
             }
         }
@@ -357,7 +357,7 @@ public class MMCQ {
     private static final double TOLERANCE_LIGHT = 0.3;
     private static final double TOLERANCE_SAT = 0.8;
 
-    public static boolean isSimilarColor(int color1, int color2) {
+    public static double howDifferentTheyAre(int color1, int color2) {
         float hue1 = ColorDeriveUtils.getHue(color1);
         float hue2 = ColorDeriveUtils.getHue(color2);
         float light1 = ColorDeriveUtils.getLightness(color1);
@@ -369,13 +369,15 @@ public class MMCQ {
 
         float hueDifference = (float)Math.pow(((sat1 + sat2) / 2) * (meanLight <= 0.5 ? meanLight * 2 : (1 - meanLight) * 2), 0.5);
 
-        if(1 == 1) {
-            return Math.min(Math.abs(hue2 - hue1), 1.0 - Math.abs(hue2 - hue1)) * hueDifference < TOLERANCE_HUE
-                    && Math.abs(light2 - light1) < TOLERANCE_LIGHT
-                    && Math.abs(sat2 - sat1) < TOLERANCE_SAT;
-        } else {
-            return dist < TOLERANCE_DIST;
-        }
+        return Math.max(
+                Math.min(Math.abs(hue2 - hue1), 1.0 - Math.abs(hue2 - hue1)) * hueDifference / TOLERANCE_HUE,
+                Math.max(Math.abs(light2 - light1) / TOLERANCE_LIGHT,
+                Math.abs(sat2 - sat1) / TOLERANCE_SAT)
+        );
+    }
+
+    public static boolean isSimilarColor(int color1, int color2) {
+        return howDifferentTheyAre(color1, color2) < 1.0;
     }
 
     public static double colorDistance(int color1, int color2) {

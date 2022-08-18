@@ -17,8 +17,8 @@ android {
         applicationId "wmsdf.cl.exp4.getwallpaper"
         minSdk 19
         targetSdk 32
-        versionCode 1300
-        versionName "1.3"
+        versionCode 1400
+        versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
