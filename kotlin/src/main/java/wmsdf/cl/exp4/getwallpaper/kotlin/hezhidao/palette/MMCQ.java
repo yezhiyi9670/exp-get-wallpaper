@@ -1,6 +1,5 @@
-package wmsdf.cl.exp4.getwallpaper.hezhidao.palette;
+package wmsdf.cl.exp4.getwallpaper.kotlin.hezhidao.palette;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Parcel;
@@ -19,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import wmsdf.cl.exp4.getwallpaper.util.ColorDeriveUtils;
+import wmsdf.cl.exp4.getwallpaper.kotlin.util.ColorDeriveUtils;
 
 /**
  * Created by hgm on 9/20/18.
@@ -358,14 +357,14 @@ public class MMCQ {
     private static final double TOLERANCE_SAT = 0.8;
 
     public static double howDifferentTheyAre(int color1, int color2) {
-        float hue1 = ColorDeriveUtils.getHue(color1);
-        float hue2 = ColorDeriveUtils.getHue(color2);
-        float light1 = ColorDeriveUtils.getLightness(color1);
-        float light2 = ColorDeriveUtils.getLightness(color2);
-        float sat1 = ColorDeriveUtils.getSaturation(color1);
-        float sat2 = ColorDeriveUtils.getSaturation(color2);
+        double hue1 = ColorDeriveUtils.getHue(color1);
+        double hue2 = ColorDeriveUtils.getHue(color2);
+        double light1 = ColorDeriveUtils.getLuminosity(color1);
+        double light2 = ColorDeriveUtils.getLuminosity(color2);
+        double sat1 = ColorDeriveUtils.getSaturation(color1);
+        double sat2 = ColorDeriveUtils.getSaturation(color2);
         double dist = colorDistance(color1, color2);
-        float meanLight = (ColorDeriveUtils.getHslLightness(color1) + ColorDeriveUtils.getHslLightness(color2)) / 2;
+        double meanLight = (ColorDeriveUtils.getHslLightness(color1) + ColorDeriveUtils.getHslLightness(color2)) / 2;
 
         float hueDifference = (float)Math.pow(((sat1 + sat2) / 2) * (meanLight <= 0.5 ? meanLight * 2 : (1 - meanLight) * 2), 0.5);
 

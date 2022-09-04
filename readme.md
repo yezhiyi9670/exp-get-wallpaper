@@ -5,13 +5,13 @@ Get Wallpaper
 [![][license]][license_link] ![][made_with] ![][api_tested]![][api_supported]
 
 [package]: https://img.shields.io/badge/Package-wmsdf.cl.exp4.getwallpaper-lightgrey.svg?style=flat-square
-[latest_version]: https://img.shields.io/badge/Version-1.4%20(1400)-green.svg?style=flat-square
-[build_date]: https://img.shields.io/badge/Build%20date-20220818-blue.svg?style=flat-square
+[latest_version]: https://img.shields.io/badge/Version-1.5%20(1500)-green.svg?style=flat-square
+[build_date]: https://img.shields.io/badge/Build%20date-20220904-blue.svg?style=flat-square
 [license]: https://img.shields.io/badge/License-GNU%20GPL%20v3-blue.svg?style=flat-square
 [license_link]: https://www.gnu.org/licenses/gpl-3.0.en.html
 [made_with]: https://img.shields.io/badge/Made%20with-Android%20Studio-green.svg?style=flat-square
-[api_tested]: https://img.shields.io/badge/Android%20version-4.4|5.1|7.1|8.1|12.0-darkblue.svg?style=flat-square
-[api_supported]: https://img.shields.io/badge/≥4.4-blue.svg?style=flat-square
+[api_tested]: https://img.shields.io/badge/Android%20version-5.1|7.1|8.1|12.0-darkblue.svg?style=flat-square
+[api_supported]: https://img.shields.io/badge/≥5.0-blue.svg?style=flat-square
 
 A ~~minimalistic~~ boring app that pull out your current launcher and lockscreen wallpaper.
 
@@ -22,6 +22,8 @@ A ~~minimalistic~~ boring app that pull out your current launcher and lockscreen
 ## Building
 
 This is an Android Studio project repository, and the easiest way to build is to open it with Android Studio.
+
+`kotlin` is the Kotlin-rewritten version.
 
 ## Usage
 

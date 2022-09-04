@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Get Wallpaper</string>
+    <string name="app_name">Get Wallpaper K</string>
+    <string name="btn_open">Open file</string>
+    <string name="btn_get">Get wallpaper</string>
+    <string name="btn_extract">Save colors</string>
+    <string name="btn_save">Save image</string>
+    <string name="request_title">Permissions</string>
+    <string name="request_body">%s requires the access to external storage to extract your wallpaper and save it.</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_ok">OK</string>
+    <string name="toast_get_fail">Failed to get wallpaper</string>
+    <string name="saved_title">Image saved</string>
+    <string name="saved_body_l1">Image is saved to %s.</string>
+    <string name="saved_body_l2">Colors are saved in %s.</string>
+    <string name="toast_save_fail">Save failed</string>
+    <string name="saved_title_json">Colors saved</string>
 </resources>
